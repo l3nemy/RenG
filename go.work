@@ -1,0 +1,7 @@
+go 1.19.2
+
+use (
+	.
+	./internal/RVM
+	./internal/compiler
+)
