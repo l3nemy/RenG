@@ -1,4 +1,7 @@
 - [ ] Make it at least compilable | 적어도 컴파일은 되게 만들기
+
+  - [ ] Design .rgoc file | .rgoc 파일 설계하기
+
 - [ ] Integrate internal/compiler with internal/RVM | compiler와 RVM 묶기
 - [ ] Localize compiler output | 컴파일러 출력 로컬라이징
 - [ ] Inspect some logics | 로직 검토
