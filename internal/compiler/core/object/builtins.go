@@ -11,7 +11,7 @@ var FunctionBuiltins = []struct {
 		&Builtin{
 			Fn: func(args ...Object) Object {
 				if len(args) != 1 {
-					return newError("wrong number of arguments. got=%d", len(args))
+					return runtimeError("wrong number of arguments. got=%d", len(args))
 				}
 
 				switch arg := args[0].(type) {
@@ -20,7 +20,7 @@ var FunctionBuiltins = []struct {
 				case *String:
 					return &Integer{Value: int64(len(arg.Value))}
 				default:
-					return newError("arguments to len not supported, got=%s", args[0].Type())
+					return runtimeError("arguments to len not supported, got=%s", args[0].Type())
 				}
 			},
 		},

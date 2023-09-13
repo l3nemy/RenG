@@ -4,6 +4,6 @@ import (
 	"fmt"
 )
 
-func newError(format string, a ...interface{}) *Error {
+func runtimeError(format string, a ...interface{}) *Error {
 	return &Error{Message: fmt.Sprintf(format, a...)}
 }
