@@ -1,8 +1,7 @@
 package system
 
 /*
-#cgo CFLAGS: -I./../sdl/include
-#cgo LDFLAGS: -L./../sdl/lib -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+#cgo LDFLAGS: -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -45,7 +44,7 @@ WindowStart() 함수에서 화면에 표시되기 시작합니다.
 */
 func Init(title string,
 	width, height int,
-	CursorPath string,
+	CursorPath *string,
 	NowCharacter *string,
 	NowText *string,
 ) *System {
@@ -88,7 +87,9 @@ func Init(title string,
 	path, _ := os.Getwd()
 
 	g := graphic.Init((*globaltype.SDL_Window)(window), (*globaltype.SDL_Renderer)(renderer), path, width, height)
-	g.RegisterCursor(CursorPath)
+	if CursorPath != nil {
+		g.RegisterCursor(*CursorPath)
+	}
 
 	return &System{
 		window:          (*globaltype.SDL_Window)(window),

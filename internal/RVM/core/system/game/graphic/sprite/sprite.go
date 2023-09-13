@@ -1,8 +1,7 @@
 package sprite
 
 /*
-#cgo CFLAGS: -I./../../../../sdl/include
-#cgo LDFLAGS: -L./../../../../sdl/lib -lSDL2 -lSDL2main -lSDL2_image
+#cgo LDFLAGS: -lSDL2 -lSDL2main -lSDL2_image
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

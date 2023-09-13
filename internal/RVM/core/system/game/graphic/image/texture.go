@@ -1,8 +1,7 @@
 package image
 
 /*
-#cgo CFLAGS: -I./../../../../sdl/include
-#cgo LDFLAGS: -L./../../../../sdl/lib -lSDL2 -lSDL2main -lSDL2_image
+#cgo LDFLAGS: -lSDL2 -lSDL2main -lSDL2_image
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -25,11 +24,11 @@ void FreesRect(SDL_Rect* r)
 import "C"
 import (
 	"internal/RVM/core/globaltype"
-	pixel "internal/RVM/core/system/game/graphic/image/pixel"
+	"internal/RVM/core/system/game/graphic/image/pixel"
 	"unsafe"
 )
 
-func (i *Image) ChangeTextureAlpha(t *globaltype.SDL_Texture, alpha int) {
+func (i *Image) ChangeTextureAlpha(t *globaltype.SDL_Texture, alpha uint8) {
 	C.SDL_SetTextureAlphaMod((*C.SDL_Texture)(t), C.uchar(alpha))
 }
 

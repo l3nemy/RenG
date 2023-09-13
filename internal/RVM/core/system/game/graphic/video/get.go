@@ -1,8 +1,7 @@
 package video
 
 /*
-#cgo CFLAGS: -I./../../../../sdl/include
-#cgo LDFLAGS: -L./../../../../sdl/lib -lSDL2 -lSDL2main
+#cgo LDFLAGS: -lSDL2 -lSDL2main
 
 #include <SDL2/SDL.h>
 */

@@ -1,8 +1,7 @@
 package audio
 
 /*
-#cgo CFLAGS: -I./../../../sdl/include
-#cgo LDFLAGS: -L./../../../sdl/lib -lSDL2 -lSDL2main -lSDL2_mixer
+#cgo LDFLAGS: -lSDL2 -lSDL2main -lSDL2_mixer
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
