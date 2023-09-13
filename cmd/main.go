@@ -1,40 +1,3 @@
-// Start Point
-//     역할
-//      1.실행시 메인 게임 엔진 메인화면 코드가 있는 파일 주소를 인터프리터한테 넘김
-//      2.파일이 제대로 작동할 준비가 되었는지 확인함
-//
-
-/*
-func main() {
-	if runtime.GOOS == "windows" {
-		root, err := os.Getwd()
-		if err != nil {
-			panic(err)
-		}
-		cmd := exec.Command("core\\RenG", "-r", fmt.Sprintf("%s\\RenGLauncher", root))
-		cmd.Run()
-	}
-}
-*/
-
-/*
-func main() {
-	if runtime.GOOS == "windows" {
-		root, err := os.Getwd()
-		if err != nil {
-			panic(err)
-		}
-		cmd := exec.Command("core\\RenG", "-r", fmt.Sprintf("%s\\game", root))
-		cmd.Run()
-	}
-}
-
-func main() {
-	s := system.Init("RenG", 1280, 720, "core\\RenG\\cursor.png", nil,nil)
-	s.WindowStart()
-}
-*/
-
 package main
 
 import (
@@ -55,7 +18,11 @@ func main() {
 		return
 	}
 
-	rf := file.CreateFile(os.Args[1])
+	rf, err := file.CreateFile(os.Args[1])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "File open error: %s\n", err)
+		return
+	}
 
 	RgoCode := rf.Read()
 	rf.CloseFile()
@@ -65,14 +32,17 @@ func main() {
 	program := p.ParseProgram()
 	fmt.Println(program.String())
 	if len(p.Errors()) != 0 {
-		for _, err := range p.Errors() {
-			io.WriteString(os.Stdout, err+"\n\n")
+		for _, parse_err := range p.Errors() {
+			_, err = io.WriteString(os.Stdout, parse_err+"\n\n")
+			if err != nil {
+				panic(err)
+			}
 		}
 		return
 	}
 
 	comp := compiler.New()
-	err := comp.CompileGlobal(program)
+	err = comp.CompileGlobal(program)
 	if err != nil {
 		fmt.Fprintf(os.Stdout, "Compile failed:\n %s\n\n", err)
 		return
