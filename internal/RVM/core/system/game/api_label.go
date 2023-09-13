@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func (g *Game) startLabel(name string, index int, sayScreenName string) {
+func (g *Game) startLabel(name string, index int, sayScreenName string) (err error) {
 	g.SayScreenName = sayScreenName
 
 	// label을 screen처럼 등록
@@ -23,7 +23,10 @@ func (g *Game) startLabel(name string, index int, sayScreenName string) {
 	g.Event.TopScreenName = name
 
 	for {
-		g.labelEval(g.LabelManager.GetNowLabelObject(), g.LabelManager.GetNowLabelName(), bps)
+		err = g.labelEval(g.LabelManager.GetNowLabelObject(), g.LabelManager.GetNowLabelName(), bps)
+		if err != nil {
+			return err
+		}
 
 		if !g.LabelManager.NextLabelObject() {
 			break
@@ -31,9 +34,10 @@ func (g *Game) startLabel(name string, index int, sayScreenName string) {
 	}
 
 	g.InActiveScreen(g.SayScreenName)
+	return
 }
 
-func (g *Game) labelEval(obj object.LabelObject, name string, bps int) {
+func (g *Game) labelEval(obj object.LabelObject, name string, bps int) (err error) {
 	switch obj := obj.(type) {
 	case *object.Code:
 		obj.Func()
@@ -41,24 +45,25 @@ func (g *Game) labelEval(obj object.LabelObject, name string, bps int) {
 		g.LabelManager.JumpLabel(obj.LabelName)
 	case *object.Call:
 		g.LabelManager.CallLabel(obj.LabelName)
-	case *object.PlayChannel:
-		g.Audio.PlayChannel(obj.ChanName, g.path+obj.Path)
 	case *object.Show:
 		g.evalShow(obj, name, bps)
 	case *object.Hide:
 		g.evalHide(obj, name, bps)
 	case *object.PlayMusic:
 		g.NowMusic = obj.Path
-		g.Audio.PlayMusic(g.path+obj.Path, obj.Loop, obj.Ms)
+		err = g.Audio.PlayMusic(g.path+obj.Path, obj.Loop, obj.Ms)
 	case *object.StopMusic:
 		g.NowMusic = ""
 		g.Audio.StopMusic(obj.Ms)
+	case *object.PlayChannel:
+		err = g.Audio.PlayChannel(obj.ChanName, g.path+obj.Path)
 	case *object.PlayVideo:
 		g.evalPlayVideo(obj, name, bps)
 	case *object.Say:
-		g.evalSay(obj)
+		err = g.evalSay(obj)
 	case *object.Pause:
 		g.InActiveScreen(g.SayScreenName)
 		time.Sleep(time.Duration(obj.Time) * time.Second)
 	}
+	return
 }

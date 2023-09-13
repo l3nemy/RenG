@@ -7,13 +7,20 @@ type Code struct {
 func (c *Code) labelObj()  {}
 func (c *Code) screenObj() {}
 
+func (c *Code) Serialize() {
+
+}
+func (c *Code) Deserialize() {
+
+}
+
 type Vector2 struct {
-	X, Y int
+	X, Y float32
 }
 
 type Color struct {
-	R int
-	G int
-	B int
-	A int
+	R uint8
+	G uint8
+	B uint8
+	A uint8
 }

@@ -28,7 +28,7 @@ func (g *Graphic) UpdateAnimation() {
 					switch anime.Anime.Type {
 					case object.ANIME_ALPHA:
 						g.Video_Manager.Lock()
-						g.Image_Manager.ChangeTextureAlpha(g.renderBuffer[anime.Bps][textureIndex].texture, anime.Anime.Curve(1))
+						g.Image_Manager.ChangeTextureAlpha(g.renderBuffer[anime.Bps][textureIndex].texture, uint8(anime.Anime.Curve(1)))
 						g.Video_Manager.Unlock()
 					case object.ANIME_ROTATE:
 						g.Video_Manager.Lock()
@@ -68,7 +68,7 @@ func (g *Graphic) UpdateAnimation() {
 				switch anime.Anime.Type {
 				case object.ANIME_ALPHA:
 					g.Video_Manager.Lock()
-					g.Image_Manager.ChangeTextureAlpha(g.renderBuffer[anime.Bps][textureIndex].texture, anime.Anime.Curve((s-anime.Anime.StartTime)/anime.Anime.Duration))
+					g.Image_Manager.ChangeTextureAlpha(g.renderBuffer[anime.Bps][textureIndex].texture, uint8(anime.Anime.Curve((s-anime.Anime.StartTime)/anime.Anime.Duration)))
 					g.Video_Manager.Unlock()
 				case object.ANIME_ROTATE:
 					g.Video_Manager.Lock()

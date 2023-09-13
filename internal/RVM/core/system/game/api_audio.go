@@ -1,17 +1,17 @@
 package game
 
-func (g *Game) PlayMusic(path string, loop bool, ms int) {
+func (g *Game) PlayMusic(path string, loop bool, ms int) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
-	g.Audio.PlayMusic(g.path+path, loop, ms)
+	return g.Audio.PlayMusic(g.path+path, loop, ms)
 }
 
-func (g *Game) PlayChannel(chanName, path string) {
+func (g *Game) PlayChannel(chanName, path string) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
-	g.Audio.PlayChannel(chanName, g.path+path)
+	return g.Audio.PlayChannel(chanName, g.path+path)
 }
 
 func (g *Game) GetMusicVolume() (volume int) {
@@ -28,11 +28,11 @@ func (g *Game) GetChannelVolume(chanName string) (volume int) {
 	return g.Audio.Channels[chanName].GetVolume()
 }
 
-func (g *Game) SetMusicVolume(volume int) {
+func (g *Game) SetMusicVolume(volume int) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
-	g.Audio.Music.SetVolume(volume)
+	return g.Audio.Music.SetVolume(volume)
 }
 
 func (g *Game) SetChannelVolume(chanName string, volume int) {

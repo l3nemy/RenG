@@ -83,16 +83,27 @@ func (g *Game) gameStart(
 			Index int
 		}
 	},
-) {
+) (joinHandle chan error, err error) {
 	if data != nil {
-		g.loadData(data)
+		err := g.loadData(data)
+		if err != nil {
+			return nil, err
+		}
 	}
 
+	joinHandle = make(chan error)
+
 	if data != nil {
-		go g.startLabel(data.CurrentLabelName, data.CurrentLabelIndex, sayLabel)
+		go func() {
+			joinHandle <- g.startLabel(data.CurrentLabelName, data.CurrentLabelIndex, sayLabel)
+		}()
 	} else {
-		go g.startLabel(firstLabel, 0, sayLabel)
+		go func() {
+			joinHandle <- g.startLabel(firstLabel, 0, sayLabel)
+		}()
 	}
+
+	return
 }
 
 func (g *Game) loadData(
@@ -107,13 +118,16 @@ func (g *Game) loadData(
 			Index int
 		}
 	},
-) {
+) error {
 	g.LabelManager.SetCallStack(data.CurrentLabelCallStack[:len(data.CurrentLabelCallStack)-1])
 	g.LabelManager.SetNowLabelName(data.CurrentLabelName)
 	g.LabelManager.SetNowLabelIndex(data.CurrentLabelIndex)
 
 	g.NowMusic = data.CurrentMusicName
-	g.Audio.PlayMusic(g.path+data.CurrentMusicName, true, 1000)
+	err := g.Audio.PlayMusic(g.path+data.CurrentMusicName, true, 1000)
+	if err != nil {
+		return err
+	}
 
 	screenNames := strings.Split(data.Data, "|")
 
@@ -134,11 +148,11 @@ func (g *Game) loadData(
 				param := strings.Split(data[1], "?")
 
 				isLoop, _ := strconv.Atoi(param[1])
-				xPos, _ := strconv.Atoi(param[2])
-				yPos, _ := strconv.Atoi(param[3])
-				xSize, _ := strconv.Atoi(param[4])
-				ySize, _ := strconv.Atoi(param[5])
-				rotate, _ := strconv.Atoi(param[6])
+				xPos, _ := parseFloat(param[2])
+				yPos, _ := parseFloat(param[3])
+				xSize, _ := parseFloat(param[4])
+				ySize, _ := parseFloat(param[5])
+				rotate, _ := parseFloat(param[6])
 
 				g.Graphic.AddScreenTextureRenderBuffer(
 					bps,
@@ -165,11 +179,11 @@ func (g *Game) loadData(
 				// TODO : transform 저장
 				param := strings.Split(data[1], "?")
 
-				xPos, _ := strconv.Atoi(param[1])
-				yPos, _ := strconv.Atoi(param[2])
-				xSize, _ := strconv.Atoi(param[3])
-				ySize, _ := strconv.Atoi(param[4])
-				rotate, _ := strconv.Atoi(param[5])
+				xPos, _ := parseFloat(param[1])
+				yPos, _ := parseFloat(param[2])
+				xSize, _ := parseFloat(param[3])
+				ySize, _ := parseFloat(param[4])
+				rotate, _ := parseFloat(param[5])
 
 				g.Graphic.AddScreenTextureRenderBuffer(
 					bps,
@@ -189,6 +203,7 @@ func (g *Game) loadData(
 			}
 		}
 	}
+	return err
 }
 
 func (g *Game) Register(
@@ -223,4 +238,9 @@ func (g *Game) registerLabels(labels *map[string]*obj.Label) {
 	for name, label := range *labels {
 		g.LabelManager.labels[name] = label
 	}
+}
+
+func parseFloat(s string) (float32, error) {
+	res, err := strconv.ParseFloat(s, 32)
+	return float32(res), err
 }

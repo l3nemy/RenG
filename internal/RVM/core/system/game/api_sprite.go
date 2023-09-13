@@ -20,7 +20,7 @@ func (g *Game) StartSprite(
 	if T.Size.X != 0 && T.Size.Y != 0 {
 		T = g.echoTransform(T, T.Size.X, T.Size.Y)
 	} else {
-		T = g.echoTransform(T, xsize, ysize)
+		T = g.echoTransform(T, float32(xsize), float32(ysize))
 	}
 
 	g.Graphic.AddScreenTextureRenderBuffer(

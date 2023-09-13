@@ -4,7 +4,7 @@ type Transform struct {
 	Pos    Vector2
 	Size   Vector2
 	Flip   Vector2
-	Rotate int
+	Rotate float32
 
 	Type SpecialTransform
 }
@@ -21,13 +21,13 @@ type Center struct {
 func (c *Center) specialTransformObj() {}
 
 type XCenter struct {
-	Ypos int
+	Ypos float32
 }
 
 func (xc *XCenter) specialTransformObj() {}
 
 type YCenter struct {
-	Xpos int
+	Xpos float32
 }
 
 func (yc *YCenter) specialTransformObj() {}

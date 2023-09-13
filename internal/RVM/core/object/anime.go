@@ -8,7 +8,7 @@ type Anime struct {
 	InitValue float64
 	StartTime float64
 	Duration  float64
-	Curve     func(t float64) int
+	Curve     func(t float64) float32
 	Time      time.Time
 	End       func()
 }

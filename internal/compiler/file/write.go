@@ -3,48 +3,69 @@ package file
 import (
 	"internal/compiler/core/code"
 	"internal/compiler/core/object"
-	"internal/compiler/util"
 	"strconv"
 )
 
-func (f *File) WriteConstant(os []object.Object) {
-	f.WriteFileByte('C')
+func (f *File) WriteConstant(os []object.Object) error {
+	err := f.WriteFileByte('C')
+	if err != nil {
+		return err
+	}
+
 	for _, o := range os {
 		switch o.Type() {
 		case object.INTEGER_OBJ:
 			f.WriteFileBytes([]byte(strconv.Itoa(int(o.(*object.Integer).Value))))
 		}
 	}
-	f.WriteFileByte('E')
+	return f.WriteFileByte('E')
 }
 
-func (f *File) WriteInstruction(is code.Instructions, os []object.Object) {
-	f.WriteFileByte('B')
+func (f *File) WriteInstruction(is code.Instructions, os []object.Object) error {
+	err := f.WriteFileByte('B')
+	if err != nil {
+		return err
+	}
+
 	for ip := 0; ip < len(is); ip++ {
 		op := code.Opcode(is[ip])
 
 		switch op {
 		case code.OpConstant:
-			f.WriteFileByte(byte(op))
+			err = f.WriteFileByte(byte(op))
+			if err != nil {
+				return err
+			}
+
 			switch os[code.ReadUint32(is[ip+1:])].Type() {
 			case object.INTEGER_OBJ:
-				f.WriteFileByte(0x04)
-				f.WriteFileBytes(is[ip+1 : ip+5])
+				err = f.WriteFileByte(0x04)
+				if err != nil {
+					return err
+				}
+
+				err = f.WriteFileBytes(is[ip+1 : ip+5])
+				if err != nil {
+					return err
+				}
 			}
 			ip += 4
 		default:
-			f.WriteFileByte(byte(op))
+			err = f.WriteFileByte(byte(op))
+			if err != nil {
+				return err
+			}
 		}
 	}
-	f.WriteFileByte('E')
+	return f.WriteFileByte('E')
 }
 
-func (f *File) WriteFileByte(b byte) {
+func (f *File) WriteFileByte(b byte) error {
 	_, err := f.file.Write([]byte{b})
-	util.ErrorCheck(err)
+	return err
 }
 
-func (f *File) WriteFileBytes(bs []byte) {
+func (f *File) WriteFileBytes(bs []byte) error {
 	_, err := f.file.Write(bs)
-	util.ErrorCheck(err)
+	return err
 }

@@ -14,7 +14,7 @@ func (g *Game) IsActiveScreen(name string) bool {
 	return ok
 }
 
-func (g *Game) ActiveScreen(name string) {
+func (g *Game) ActiveScreen(name string) error {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
@@ -29,7 +29,7 @@ func (g *Game) ActiveScreen(name string) {
 	g.Event.TopScreenName = name
 
 	g.screenBps[name] = bps
-	g.screenEval(screen.Obj, name, bps)
+	return g.screenEval(screen.Obj, name, bps)
 }
 
 func (g *Game) InActiveScreen(name string) {
@@ -69,6 +69,7 @@ func (g *Game) EvalComponent(screenName string, component *[]obj.ScreenObject) i
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
+	// TODO: Handle error
 	g.screenEval(*component, screenName, g.screenBps[screenName])
 
 	return g.Graphic.GetCurrentTopScreenIndexByBps(g.screenBps[screenName])
@@ -110,7 +111,7 @@ func (g *Game) ShowTexture(textureName, screenName string, T obj.Transform) (tex
 	if T.Size.X != 0 && T.Size.Y != 0 {
 		T = g.echoTransform(T, T.Size.X, T.Size.Y)
 	} else {
-		T = g.echoTransform(T, g.Graphic.Image_Manager.GetImageWidth(textureName), g.Graphic.Image_Manager.GetImageHeight(textureName))
+		T = g.echoTransform(T, float32(g.Graphic.Image_Manager.GetImageWidth(textureName)), float32(g.Graphic.Image_Manager.GetImageHeight(textureName)))
 	}
 
 	g.Graphic.AddScreenTextureRenderBuffer(

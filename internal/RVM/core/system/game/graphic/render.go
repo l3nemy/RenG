@@ -1,8 +1,7 @@
 package graphic
 
 /*
-#cgo CFLAGS: -I./../../../sdl/include
-#cgo LDFLAGS: -L./../../../sdl/lib -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf
+#cgo LDFLAGS: -lSDL2 -lSDL2main -lSDL2_image -lSDL2_ttf
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -153,11 +152,11 @@ func (g *Graphic) GetCurrentRenderBufferTextureNameANDTransformByBPS(bps int) []
 		format := strings.Join(
 			[]string{
 				name,
-				strconv.Itoa(t.transform.Pos.X),
-				strconv.Itoa(t.transform.Pos.Y),
-				strconv.Itoa(t.transform.Size.X),
-				strconv.Itoa(t.transform.Size.Y),
-				strconv.Itoa(t.transform.Rotate),
+				formatFloat(t.transform.Pos.X),
+				formatFloat(t.transform.Pos.Y),
+				formatFloat(t.transform.Size.X),
+				formatFloat(t.transform.Size.Y),
+				formatFloat(t.transform.Rotate),
 			},
 			"?",
 		)
@@ -188,4 +187,8 @@ func (g *Graphic) GetCurrentWindowSize() (x, y int) {
 	var xsize, ysize C.int
 	C.SDL_GetWindowSize((*C.SDL_Window)(g.window), &xsize, &ysize)
 	return int(xsize), int(ysize)
+}
+
+func formatFloat(f float32) string {
+	return strconv.FormatFloat(float64(f), 'G', 3, 32)
 }

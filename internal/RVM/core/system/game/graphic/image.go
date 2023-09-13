@@ -12,102 +12,102 @@ func (g *Graphic) GetTexture(bps, index int) *globaltype.SDL_Texture {
 	return g.renderBuffer[bps][index].texture
 }
 
-func (g *Graphic) GetCurrentTextureXPosition(bps, index int) (x int) {
+func (g *Graphic) GetCurrentTextureXPosition(bps, index int) (x float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 	return g.renderBuffer[bps][index].transform.Pos.X
 }
 
-func (g *Graphic) GetCurrentTextureYPosition(bps, index int) (x int) {
+func (g *Graphic) GetCurrentTextureYPosition(bps, index int) (x float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	return g.renderBuffer[bps][index].transform.Pos.Y
 }
 
-func (g *Graphic) GetCurrentTextureXSize(bps, index int) (x int) {
+func (g *Graphic) GetCurrentTextureXSize(bps, index int) (x float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 	return g.renderBuffer[bps][index].transform.Size.X
 }
 
-func (g *Graphic) GetCurrentTextureYSize(bps, index int) (y int) {
+func (g *Graphic) GetCurrentTextureYSize(bps, index int) (y float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	return g.renderBuffer[bps][index].transform.Size.Y
 }
 
-func (g *Graphic) GetCurrentTextureXFlip(bps, index int) (x int) {
+func (g *Graphic) GetCurrentTextureXFlip(bps, index int) (x float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 	return g.renderBuffer[bps][index].transform.Flip.X
 }
 
-func (g *Graphic) GetCurrentTextureYFlip(bps, index int) (y int) {
+func (g *Graphic) GetCurrentTextureYFlip(bps, index int) (y float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	return g.renderBuffer[bps][index].transform.Flip.Y
 }
 
-func (g *Graphic) GetCurrentTexturePosition(bps, index int) (x, y int) {
+func (g *Graphic) GetCurrentTexturePosition(bps, index int) (x, y float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	return g.renderBuffer[bps][index].transform.Pos.X, g.renderBuffer[bps][index].transform.Pos.Y
 }
 
-func (g *Graphic) GetCurrentTextureSize(bps, index int) (x, y int) {
+func (g *Graphic) GetCurrentTextureSize(bps, index int) (x, y float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	return g.renderBuffer[bps][index].transform.Size.X, g.renderBuffer[bps][index].transform.Size.Y
 }
 
-func (g *Graphic) SetCurrentTextureXPosition(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureXPosition(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Pos.X = value
 }
 
-func (g *Graphic) SetCurrentTextureYPosition(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureYPosition(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Pos.Y = value
 }
 
-func (g *Graphic) SetCurrentTextureXSize(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureXSize(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Size.X = value
 }
 
-func (g *Graphic) SetCurrentTextureYSize(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureYSize(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Size.Y = value
 }
 
-func (g *Graphic) SetCurrentTextureXFlip(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureXFlip(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Flip.X = value
 }
 
-func (g *Graphic) SetCurrentTextureYFlip(bps, index, value int) {
+func (g *Graphic) SetCurrentTextureYFlip(bps, index int, value float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
 	g.renderBuffer[bps][index].transform.Flip.Y = value
 }
 
-func (g *Graphic) SetVideoAlphaByName(name string, alpha int) {
+func (g *Graphic) SetVideoAlphaByName(name string, alpha uint8) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
@@ -125,7 +125,7 @@ func (g *Graphic) SetVideoAlphaByName(name string, alpha int) {
 	)
 }
 
-func (g *Graphic) SetAlphaByBps(bps, index, alpha int) {
+func (g *Graphic) SetAlphaByBps(bps, index int, alpha uint8) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
@@ -137,7 +137,7 @@ func (g *Graphic) SetAlphaByBps(bps, index, alpha int) {
 	g.Video_Manager.Unlock()
 }
 
-func (g *Graphic) SetRotateByBps(bps, index, alpha int) {
+func (g *Graphic) SetRotateByBps(bps, index int, alpha float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
@@ -164,7 +164,7 @@ func (g *Graphic) ChangeTextureByBps(bps, index int, texture *globaltype.SDL_Tex
 	}
 }
 
-func (g *Graphic) ChangeTextureTransformByBps(bps, index int, xpos, ypos, xsize, ysize int) {
+func (g *Graphic) ChangeTextureTransformByBps(bps, index int, xpos, ypos, xsize, ysize float32) {
 	g.lock.Lock()
 	defer g.lock.Unlock()
 
@@ -175,25 +175,25 @@ func (g *Graphic) ChangeTextureTransformByBps(bps, index int, xpos, ypos, xsize,
 }
 
 // Real -> Change
-func (g *Graphic) GetFixedChangeXSize(i int) int {
+func (g *Graphic) GetFixedChangeXSize(i int) float32 {
 	xsize, _ := g.GetCurrentWindowSize()
-	return int(float32(i) * float32(xsize) / float32(g.width))
+	return float32(i) * float32(xsize) / float32(g.width)
 }
 
 // Real -> Change
-func (g *Graphic) GetFixedChangeYSize(i int) int {
+func (g *Graphic) GetFixedChangeYSize(i int) float32 {
 	_, ysize := g.GetCurrentWindowSize()
-	return int(float32(i) * float32(ysize) / float32(g.height))
+	return float32(i) * float32(ysize) / float32(g.height)
 }
 
 // Change -> Real
-func (g *Graphic) GetFixedRealXSize(i int) int {
+func (g *Graphic) GetFixedRealXSize(i int) float32 {
 	xsize, _ := g.GetCurrentWindowSize()
-	return int(float32(i) * float32(g.width) / float32(xsize))
+	return float32(i) * float32(g.width) / float32(xsize)
 }
 
 // Change -> Real
-func (g *Graphic) GetFixedRealYSize(i int) int {
+func (g *Graphic) GetFixedRealYSize(i int) float32 {
 	_, ysize := g.GetCurrentWindowSize()
-	return int(float32(i) * float32(g.height) / float32(ysize))
+	return float32(i) * float32(g.height) / float32(ysize)
 }
