@@ -19,7 +19,7 @@ seq:
     encoding: UTF-8
 
   - id: num_labels
-    type: u4
+    type: u8
 
   - id: labels
     type: label
@@ -27,7 +27,7 @@ seq:
     repeat-expr: num_labels
 
   - id: num_screens
-    type: u4
+    type: u8
 
   - id: screens
     type: screen
@@ -35,7 +35,7 @@ seq:
     repeat-expr: num_screens
 
   - id: num_code_specs
-    type: u4
+    type: u8
 
   - id: code_specs
     type: code_spec
@@ -43,6 +43,20 @@ seq:
     repeat-expr: num_code_specs
 
 enums:
+  object_type:
+    0: "null"
+    1: boolean
+    2: integer
+    3: float
+    4: string
+    5: array
+
+    6: code
+    7: label_object
+    8: screen_object
+
+    99: error
+
   label_obj_type:
     0: code
     1: show
@@ -85,6 +99,41 @@ enums:
     3: y_pos
 
 types:
+  "null":
+    seq:
+      - id: placeholder
+        contents: [0]
+
+  object:
+    seq:
+      - id: type
+        type: u2
+        enum: object_type
+
+      - id: body
+        type:
+          switch-on: type
+          cases:
+            "object_type::null": "null"
+            "object_type::boolean": b1
+            "object_type::integer": u8
+            "object_type::float": f8
+            "object_type::string": strz
+            "object_type::array": array
+            "object_type::label_object": label_object
+            "object_type::screen_object": screen_object
+            "object_type::error": error
+
+  array:
+    seq:
+      - id: num_obj
+        type: u8
+
+      - id: obj
+        type: object
+        repeat: expr
+        repeat-expr: num_obj
+
   uuid:
     seq:
       - id: body
@@ -524,3 +573,8 @@ types:
 
       - id: scroll
         type: code
+  error:
+    seq:
+      - id: message
+        type: strz
+        encoding: UTF-8
