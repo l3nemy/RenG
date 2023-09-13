@@ -16,7 +16,7 @@ type Say struct {
 func (s *Say) labelObj() {}
 
 type Pause struct {
-	Time float32
+	Time float64
 }
 
 func (p *Pause) labelObj() {}
